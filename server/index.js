@@ -53,4 +53,23 @@ app.post('/register', async(req,res)=>{
     }
 });
 
+
+app.post('/login',async(req,res)=>{
+    const {username,password} = req.body;
+    userModel.findOne({username:username})
+    .then(user =>{
+        if(user){
+            if(user.password === password){
+                res.json("Login successfull");
+            }
+
+            else
+            res.json("Incorrect password");
+
+        }
+        else
+        res.json("User not found");
+    })
+})
+
 app.listen(4000);
