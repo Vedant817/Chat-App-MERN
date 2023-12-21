@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useContext } from "react";
 import Register from "./Register";
-import {UserContext} from "./UserContext";
+import context from "./UserContext";
 import Chat from './Chat';
 
 const Routes = () => {
-    const { username, id } = useContext(UserContext);
+    const { username, id } = useContext(context.UserContext);
     if (username) {
         return (<Chat />);
     }

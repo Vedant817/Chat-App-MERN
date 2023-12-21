@@ -6,7 +6,7 @@ const Register = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isLoginOrRegister, setIsLoginOrRegister] = useState('login');
-    const { setUsername: setLoggedInUsername, setId } = useContext(UserContext);
+    const { setUsername: setLoggedInUsername, setId } = useContext(UserContext.UserContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

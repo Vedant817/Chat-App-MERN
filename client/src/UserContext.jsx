@@ -2,7 +2,7 @@
 import { createContext, useEffect, useState } from "react"
 import axios from 'axios';
 
-export const UserContext = createContext({});
+const UserContext = createContext({});
 
 const UserContextProvider = ({children}) => {
     const [username, setUsername] = useState(null);
@@ -22,4 +22,4 @@ const UserContextProvider = ({children}) => {
     );
 }
 
-export default UserContextProvider;
+export default { UserContextProvider, UserContext };

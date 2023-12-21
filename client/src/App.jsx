@@ -1,5 +1,5 @@
 import axios from "axios"
-import {UserContextProvider} from "./UserContext";
+import context from "./UserContext";
 import Routes from "./Routes";
 
 function App() {
@@ -7,9 +7,9 @@ function App() {
   axios.defaults.withCredentials = true; //! Helps in using our cookies
   return (
     <>
-      <UserContextProvider>
+      <context.UserContextProvider>
         <Routes />
-      </UserContextProvider>
+      </context.UserContextProvider>
     </>
   )
 }
