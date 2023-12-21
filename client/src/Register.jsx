@@ -3,8 +3,9 @@ import axios from 'axios'
 const Register = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const submit = ()=>{
-        axios
+    const submit = async (e)=>{
+        e.preventDefault();
+        await axios.post('/register',{username, password});
     }
     return (
         <>
