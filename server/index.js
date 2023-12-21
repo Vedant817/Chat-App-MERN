@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const userModel = require('./models/User.js');
 const cors = require('cors');
+const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -12,7 +13,8 @@ app.use(cors({
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     optionsSuccessStatus: 204,
 }));
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser());
 
 const mongodbUrl = process.env.MONGODB_URL;
 const jwtSecret = process.env.JWT_SECRET
@@ -31,7 +33,7 @@ app.get('/profile',(req,res)=>{
         })
     }
     else{
-        res.status(420).json('No Token');
+        res.status(401).json('No Token');
     }
 });
 

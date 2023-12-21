@@ -1,25 +1,25 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { createContext, useEffect, useState } from "react"
-import axios from 'axios'
+import axios from 'axios';
 
 export const UserContext = createContext({});
 
-const UserContextProvider = ({ children }) => {
+export const UserContextProvider = () => {
     const [username, setUsername] = useState(null);
     const [id, setId] = useState(null);
     useEffect(()=>{
         axios.get('/profile').then(response => {
-            console.log(response.data);
+            setId(response.data.userId);
+            setUsername(response.data.username);
         });
     },[]);
     return (
         <>
             <UserContext.Provider value={{ username, setUsername, id, setId }}>
-                {children}
+                {/* {children} */}
             </UserContext.Provider>
         </>
-    )
+    );
 }
 
-export default UserContextProvider
+//export default UserContextProvider;
