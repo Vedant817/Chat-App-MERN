@@ -1,6 +1,5 @@
 import { useNavigate, useState } from "react";
 import axios from 'axios'
-import UserContext from "./UserContext";
 
 const Login = () => {
     const [username, setUsername] = useState("");

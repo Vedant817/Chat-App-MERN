@@ -10,7 +10,7 @@ const Routes = () => {
         return (<Chat />);
     }
     return (
-        <Register />
+        <Register/>
     );
 }
 
