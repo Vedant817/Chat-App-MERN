@@ -1,4 +1,3 @@
-import React from 'react'
 import './myStyle.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { IconButton } from '@mui/material';

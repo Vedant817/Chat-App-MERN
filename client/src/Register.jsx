@@ -32,9 +32,9 @@ const Register = () => {
                             </div>
                         )}
                         {isLoginOrRegister === 'login' && (
-                            <div>
-                                Do not have an account?
-                                <button className="ml-1" onClick={() => setIsLoginOrRegister('register')}>
+                            <div className="text-white text-base">
+                                <span className="mr-1">Do not have an account?</span>
+                                <button className="ml-1 text-cyan-300" onClick={() => setIsLoginOrRegister('register')}>
                                     Register
                                 </button>
                             </div>
