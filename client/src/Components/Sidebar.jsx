@@ -1,4 +1,3 @@
-import './myStyle.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { IconButton } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -10,43 +9,43 @@ import ConversationsItem from './ConversationsItem';
 
 function Sidebar() {
   return (
-    <div className='sidebar'>
-      <div className="sb-header">
+    <div className='sidebar flex-30 flex flex-col'>
+      <div className="sb-header bg-gray-700 rounded-20 p-5 m-5 flex justify-between">
         <div>
-        <IconButton>
-        <AccountCircleIcon/>
-        </IconButton>
+          <IconButton>
+            <AccountCircleIcon />
+          </IconButton>
         </div>
-        
+
 
         <IconButton>
-        <PersonAddIcon/>
+          <PersonAddIcon />
         </IconButton>
 
         <IconButton>
-        <GroupAddIcon/>
+          <GroupAddIcon />
         </IconButton>
 
         <IconButton>
-        <AddCircleIcon/>
+          <AddCircleIcon />
         </IconButton>
 
         <IconButton>
-        <NightlightIcon/>
+          <NightlightIcon />
         </IconButton>
-        
-        
-        
+
+
+
       </div>
-      <div className="sb-search">
+      <div className="sb-search bg-white rounded-20 p-5 m-5 flex items-center">
         <IconButton>
-        <SearchIcon/>
+          <SearchIcon />
         </IconButton>
-        
-        <input placeholder='search' className='search-box'/>
+
+        <input placeholder='search' className='search-box' />
       </div>
-      <div className="sb-convo">
-        <ConversationsItem/>
+      <div className="sb-convo bg-white rounded-20 p-5 m-5 flex-1">
+        <ConversationsItem />
       </div>
     </div>
   )
