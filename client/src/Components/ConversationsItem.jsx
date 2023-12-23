@@ -6,4 +6,4 @@ function ConversationsItem() {
   )
 }
 
-export default ConversationsItem
+export default ConversationsItem;
