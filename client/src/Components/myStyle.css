@@ -20,7 +20,7 @@
 
 
 .sb-header{
-    background-color: rgb(130, 118, 118);
+    background-color: white;
     border-radius: 20px;
     padding: 10px 5px;
     margin: 5px;
@@ -52,3 +52,4 @@
     margin: 5px;
     flex: 1;
 }
+
