@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { useContext } from "react";
-import Register from "./Register";
+import Register from "./Pages/Register";
 import context from "./UserContext";
 import Chat from './Chat';
 
-const Routes = () => {
+const Register_Valid = () => {
     const { username, id } = useContext(context.UserContext);
     if (username) {
         return (<Chat />);
@@ -14,4 +14,4 @@ const Routes = () => {
     );
 }
 
-export default Routes
+export default Register_Valid;
