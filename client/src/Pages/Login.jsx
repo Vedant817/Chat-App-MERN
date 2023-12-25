@@ -1,4 +1,5 @@
-import { useNavigate, useState } from "react";
+import {useState} from "react";
+import { useNavigate } from "react-router";
 import axios from 'axios';
 
 const Login = () => {
@@ -12,7 +13,7 @@ const Login = () => {
       .then(result => {
         console.log(result)
 
-        if (result.data === "Login successfull") {
+        if (result.data === 'Login successful') {
           navigate("/main");
         }
 

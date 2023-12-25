@@ -56,7 +56,7 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    userModel.findOne({ username: username })
+   await userModel.findOne({ username: username })
         .then(user => {
             if (user) {
                 if (user.password === password) {
