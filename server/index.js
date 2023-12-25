@@ -15,6 +15,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static('public'));
 
 const mongodbUrl = process.env.MONGODB_URL;
 const jwtSecret = process.env.JWT_SECRET
@@ -71,5 +72,15 @@ app.post('/login', async (req, res) => {
                 res.json("User not found");
         })
 })
+
+app.get('/api/data', async (req, res) => {
+    try {
+      const data = await userModel.find(); // You can add conditions or projections here
+      res.json(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
 
 app.listen(4000);
