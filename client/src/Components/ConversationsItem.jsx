@@ -1,7 +1,6 @@
 import React from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Icon, IconButton } from '@mui/material';
-import axios from 'axios';
 
 
 function ConversationsItem({props}) {

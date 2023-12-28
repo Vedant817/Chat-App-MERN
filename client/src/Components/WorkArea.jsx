@@ -1,21 +1,25 @@
-
 import React from 'react'
-import { useState,useEffect } from 'react';
+import SendIcon from '@mui/icons-material/Send';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { IconButton } from '@mui/material';
+
 
 function WorkArea() {
-
-  const [message, setmessage] = useState('');
-  const [chat, setchat] = useState([]);
-
   return (
-    <div className='work-area border-5 border-black flex-70'>
-      <h1>WorkArea</h1>
-      <input type='text' name='chat' placeholder='send text' value={message} onChange={(e)=>{
-        setmessage(e.target.value)
-      }}/>
-
-      
-
+    <div className='work-area'>
+      <div className="head">
+        <IconButton>
+          <AccountCircleIcon className='acc'/>
+        </IconButton>
+        <p className='c-title'>Chat Title</p>
+      </div>
+      <div className="mid">mid</div>
+      <div className="bottom">
+        <input type='text' placeholder='Enter your text' className='type-box'/>
+        <IconButton>
+          <SendIcon/>
+        </IconButton>
+      </div>
     </div>
   )
 }

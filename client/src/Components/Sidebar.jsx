@@ -7,6 +7,7 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import SearchIcon from '@mui/icons-material/Search';
 import ConversationsItem from './ConversationsItem';
 import { useState } from 'react';
+import WorkArea from './WorkArea';
 
 function Sidebar() {
 
