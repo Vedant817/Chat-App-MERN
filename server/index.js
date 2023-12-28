@@ -4,6 +4,7 @@ const userModel = require('./models/User.js');
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken');
+const { createServer } = require('http');
 require('dotenv').config();
 
 const app = express()

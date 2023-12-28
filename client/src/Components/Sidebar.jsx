@@ -6,8 +6,31 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import SearchIcon from '@mui/icons-material/Search';
 import ConversationsItem from './ConversationsItem';
+import { useState } from 'react';
 
 function Sidebar() {
+
+  const [conversations, setconversations] = useState([
+    {
+      name:"Test#1",
+      lastMessage:"Last Message #1",
+      timeStamp:"today",
+    },
+
+    {
+      name:"Test#2",
+      lastMessage:"Last Message #2",
+      timeStamp:"today",
+    },
+
+    {
+      name:"Test#3",
+      lastMessage:"Last Message #3",
+      timeStamp:"today",
+    },
+  ])
+  
+
   return (
     <div className='sidebar flex-30 flex flex-col'>
       <div className="sb-header bg-gray-700 rounded-20 p-5 m-5 flex justify-between">
@@ -45,7 +68,10 @@ function Sidebar() {
         <input placeholder='search' className='search-box' />
       </div>
       <div className="sb-convo bg-white rounded-20 p-5 m-5 flex-1">
-        <ConversationsItem />
+        {conversations.map((conversation)=>{
+          return <ConversationsItem props = {conversation}/>
+        })}
+
       </div>
     </div>
   )

@@ -19,7 +19,13 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.3",
+    "nanoid": "^5.0.4",
     "nodemon": "^3.0.2",
-    "punycode": "^2.3.1"
+    "punycode": "^2.3.1",
+    "socket.io": "^4.7.2"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8",
+    "utf-8-validate": "^5.0.10"
   }
 }
