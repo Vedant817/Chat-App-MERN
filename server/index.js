@@ -4,10 +4,13 @@ const userModel = require('./models/User.js');
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken');
-const { createServer } = require('http');
+const http = require('http');
+const {createServer} = require("http");
+const {Server} = require("socket.io");
 require('dotenv').config();
 
 const app = express()
+const server = http.createServer(app);
 app.use(cors({
     credentials: true,
     origin: "http://localhost:5173",
@@ -18,9 +21,21 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
 
+const httpServer = createServer();
+const io = new Server(httpServer,{
+    cors:{
+        origin: "http://localhost:5173",
+    }
+})
+
+io.on('connection',socket=>{
+    socket.emit('chat-message','Hello World');
+})
+
 const mongodbUrl = process.env.MONGODB_URL;
 const jwtSecret = process.env.JWT_SECRET
 mongoose.connect(mongodbUrl).catch(error => console.error('MongoDB connection error:', error));
+
 
 app.get('/test', (req, res) => {
     res.json('Test OK');
@@ -84,4 +99,4 @@ app.get('/api/data', async (req, res) => {
     }
   });
 
-app.listen(4000);
+httpServer.listen(4000);
