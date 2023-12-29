@@ -5,16 +5,30 @@ import { IconButton } from '@mui/material';
 import io from 'socket.io-client';
 
 const socket = io('http://localhost:4000');
+const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container');
+const messageInput = document.getElementById('type-box');
 
 socket.on('chat-message',data =>{
   console.log(data);
 })
 
-messageForm.addEventListener('submit',e=>{
-  e.preventDefault();
-  
-})
+
+document.addEventListener('DOMContentLoaded', function () {
+  messageForm.addEventListener('submit', e =>{
+    e.preventDefault();
+    const message = messageInput.value;
+    socket.emit('send-chat-message',message);
+    messageInput.value = '';
+  })
+
+  function appendMessage(message){
+    const messageElement = document.createElement('div');
+    messageElement.innerText = message;
+  }
+});
+
+
 
 
 function WorkArea() {
