@@ -18,7 +18,7 @@ This project demonstrates a real-time chat application built using the MERN stac
 
 **## Setup:**
 1. **Clone the repository:**
-	> git clone https://github.com/your-username/chat-app.git
+	> git clone https://github.com/Vedant817/Chat-App-MERN.git
 2. **Install dependencies:**
 	> cd chat-app
 npm install
