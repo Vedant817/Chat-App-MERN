@@ -100,3 +100,16 @@
 }
 
 
+.conversation-container{
+    display: flex;
+    justify-content: left;
+    padding: 2px;
+    align-items: center;
+}
+
+
+.acc-icon{
+    transform: scale(1.3);
+}
+
+
