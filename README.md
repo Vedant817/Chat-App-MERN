@@ -1,4 +1,4 @@
-**# Real-Time Chat App with MERN Stack and Socket.IO**
+# Real-Time Chat App with MERN Stack and Socket.IO
 
 **## Description**
 
