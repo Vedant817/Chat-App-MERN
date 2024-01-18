@@ -2,11 +2,29 @@ import {useState} from "react";
 import { useNavigate } from "react-router";
 import axios from 'axios';
 
+const fetchUser = async()=>{
+  try {
+    const response = await axios.get('http://localhost:3000/get_user',{username});
+    const userData = response.data;
+    displayUserDetails(userData);
+  } catch (error) {
+   console.error('Error fetching user:', error);
+   alert('Error fetching user. Please try again.');
+  }
+}
+
+
+const displayUserDetails = (userData) =>{
+  const userDetailsDiv = document.getElementById('userDetails');
+  userDetailsDiv.innerHTML = `<p> Username: ${userData.username} </p>`;
+}
+
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  fetchUser();
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,6 +34,7 @@ const Login = () => {
 
         if (result.data === 'Login successful') {
           navigate("/main");
+          fetchUser();
         }
 
         else if (result.data === "Incorrect password") {
@@ -29,22 +48,7 @@ const Login = () => {
       .catch(err => console.log(err))
   }
 
-  const fetchUser = async()=>{
-    try {
-      const response = await axios.get('http://localhost:3000/get_user',{username});
-      const userData = response.data;
-      displayUserDetails(userData);
-    } catch (error) {
-     console.error('Error fetching user:', error);
-     alert('Error fetching user. Please try again.');
-    }
-  }
-
-
-  const displayUserDetails = (userData) =>{
-    const userDetailsDiv = document.getElementById('userDetails');
-    userDetailsDiv.innerHTML = `<p> Username: ${userData.username} </p>`;
-  }
+  
 
 
   return (
