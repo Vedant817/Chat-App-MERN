@@ -28,10 +28,15 @@ const io = new Server(httpServer,{
     }
 })
 
+const users ={};
 io.on('connection',socket=>{
+    socket.on('new-user',name =>{
+        users[socket.id] = name;
+        socket.broadcast.emit('user-connected',name);
+    })
     socket.on('send-chat-message',message =>{
         console.log(message);
-        socket.broadcast.emit('chat-message',message)
+        socket.broadcast.emit('chat-message',{message:message,name:users[socket.id]});
     });
 })
 
@@ -92,13 +97,30 @@ app.post('/login', async (req, res) => {
         })
 })
 
-app.get('/api/data', async (req, res) => {
+
+  app.get('/get_user', async (req, res) => {
+    const username = req.query.username;
+
+    if (!username) {
+      return res.status(400).json({ error: 'Username parameter is missing' });
+    }
+
     try {
-      const data = await userModel.find(); // You can add conditions or projections here
-      res.json(data);
+      // Assuming you have a 'users' collection
+      const usersCollection = db.collection('users');
+
+      // Find the user by username
+      const user = await usersCollection.findOne({ username });
+
+      if (user) {
+        // Return the user data
+        return res.json(user);
+      } else {
+        return res.status(404).json({ error: 'User not found' });
+      }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Error fetching user:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
   });
 

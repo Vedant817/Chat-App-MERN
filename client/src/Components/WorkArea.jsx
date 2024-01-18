@@ -4,17 +4,33 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { IconButton } from '@mui/material';
 import io from 'socket.io-client';
 
+
+document.addEventListener('DOMContentLoaded', function () {
+
 const socket = io('http://localhost:4000');
 const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('type-box');
 
+const appendMessage = (message) =>{
+  const messageElement = document.createElement('div');
+  messageElement.innerText = message;
+  messageContainer.append(messageElement);
+}
+
+const name = prompt('What is your name?');
+appendMessage('You joined');
+socket.emit('new-user',name);
+
+
 socket.on('chat-message',data =>{
-  console.log(data);
+  appendMessage(`${data.name}:${data.message}`);
 })
 
+socket.on('user-connected',name =>{
+  appendMessage(`${name} connected`);
+})
 
-document.addEventListener('DOMContentLoaded', function () {
   messageForm.addEventListener('submit', e =>{
     e.preventDefault();
     const message = messageInput.value;
@@ -22,12 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
     messageInput.value = '';
   })
 
-  function appendMessage(message){
-    const messageElement = document.createElement('div');
-    messageElement.innerText = message;
-    messageContainer.append(messageElement);
-  }
+  
 });
+
 
 
 

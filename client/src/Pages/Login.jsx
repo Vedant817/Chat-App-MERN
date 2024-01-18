@@ -6,6 +6,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  fetchUser();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,6 +28,25 @@ const Login = () => {
 
       .catch(err => console.log(err))
   }
+
+  const fetchUser = async()=>{
+    try {
+      const response = await axios.get('http://localhost:3000/get_user',{username});
+      const userData = response.data;
+      displayUserDetails(userData);
+    } catch (error) {
+     console.error('Error fetching user:', error);
+     alert('Error fetching user. Please try again.');
+    }
+  }
+
+
+  const displayUserDetails = (userData) =>{
+    const userDetailsDiv = document.getElementById('userDetails');
+    userDetailsDiv.innerHTML = `<p> Username: ${userData.username} </p>`;
+  }
+
+
   return (
     <>
       <div className="bg-[#1B202D] h-screen flex items-center">
@@ -34,6 +54,7 @@ const Login = () => {
           <input value={username} onChange={e => setUsername(e.target.value)} className="block w-full rounded-md p-2 mb-2 border" type="text" placeholder="username" />
           <input value={password} onChange={e => setPassword(e.target.value)} className="block w-full rounded-md p-2 mb-2 border" type="password" placeholder="password" />
           <button className="text-white block w-full rounded-md p-2 bg-[#373E4E] hover:bg-[#2b303c] active:bg-[#2b303c]">Login</button>
+          <div id="userDetails"></div>
         </form>
       </div>
     </>
