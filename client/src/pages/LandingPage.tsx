@@ -14,9 +14,22 @@ const LandingPage = () => {
         return emailRegex.test(email);
     }
 
-    const handleUpdate = (e: React.FormEvent) => {
+    const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (validateEmail(email)) {
+            const response = await fetch('http://localhost:5000/api/subscription', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            });
+
+            if (!response.ok) {
+                toast.error('An error occurred. Please try again later.');
+                return;
+            }
+            setEmail('');
             toast.success('Thanks for Subscribing. You will receive future updates!');
         } else {
             toast.error('Please enter a valid email address');
@@ -66,7 +79,6 @@ const LandingPage = () => {
                             <div className="space-x-4">
                                 <a href='/register' style={{ textDecoration: 'none' }}>
                                     <Button>Get Started</Button>
-                                    {/* //TODO: Handle User Authentication */}
                                 </a>
                                 <Button variant="outline" onClick={learnMore}>Learn More</Button>
                             </div>
