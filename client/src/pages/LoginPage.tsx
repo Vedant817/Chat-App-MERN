@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { ToastContainer, toast } from 'react-toastify'
 
 interface LoginData {
   email: string
@@ -15,6 +16,37 @@ const LoginPage = () => {
     email: '',
     password: '',
   })
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+
+        if (!token) return;
+
+        const response = await fetch(`http://localhost:5000/api/auth/me`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (data.user) {
+          toast.success('You are already logged in. Redirecting...');
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        console.error('Error verifying user:', error);
+      }
+    };
+
+    checkUser();
+  }, [navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -24,14 +56,41 @@ const LoginPage = () => {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    //TODO: Send form data to server
-    console.log('Login submitted:', loginData)
-  }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.message || 'Invalid credentials.');
+        setLoading(false);
+        return;
+      }
+
+      localStorage.setItem('token', data.token);
+      toast.success('Login successful! Redirecting...');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error during login:', error);
+      toast.error('An unexpected error occurred.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 w-screen p-4">
+      <ToastContainer />
       <div className="w-full max-w-md">
         <Card className="shadow-lg">
           <CardHeader className="space-y-1">

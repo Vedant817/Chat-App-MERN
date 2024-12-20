@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { toast, ToastContainer } from 'react-toastify';
 
 interface FormData {
   fullName: string
@@ -16,7 +17,46 @@ const RegisterPage = () => {
     fullName: '',
     email: '',
     password: '',
-  })
+  });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          navigate('/register');
+          return;
+        }
+
+        const response = await fetch(`http://localhost:5000/api/auth/me`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (data.user) {
+          toast.success('Redirecting to Login.');
+          console.log('User Fetched', data.user);
+          navigate('/dashboard');
+        } else {
+          navigate('/login');
+        }
+      } catch (error) {
+        toast.error('An error occurred while verifying the user.');
+        console.error('Error:', error);
+        navigate('/login');
+      }
+    };
+
+    checkUser();
+  }, [navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -26,14 +66,41 @@ const RegisterPage = () => {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    //TODO: Send form data to server
-    console.log('Form submitted:', formData)
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.message || 'An error occurred while registering.');
+        setLoading(false);
+        return;
+      }
+
+      localStorage.setItem('token', data.token);
+      toast.success('Account created successfully. Redirecting to Dashboard.');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error during registration:', error);
+      toast.error('An unexpected error occurred.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 w-screen">
+      <ToastContainer />
       <div className="w-full max-w-md">
         <Card className="shadow-lg">
           <CardHeader className="space-y-1">
