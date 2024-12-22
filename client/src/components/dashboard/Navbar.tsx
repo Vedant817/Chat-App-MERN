@@ -17,8 +17,10 @@ const Navbar: React.FC<NavbarProps> = ({ username }) => {
         </a>
         <span className="text-sm text-muted-foreground">Welcome, {username}</span>
       </div>
-      <Button onClick={() => setIsAddFriendOpen(true)}>Add Friend</Button>
-      <AddFriendDialog open={isAddFriendOpen} onOpenChange={setIsAddFriendOpen} />
+      <div>
+        <Button onClick={() => setIsAddFriendOpen(true)}>Add Friend</Button>
+        <AddFriendDialog open={isAddFriendOpen} onOpenChange={setIsAddFriendOpen} />
+      </div>
     </nav>
   )
 }
