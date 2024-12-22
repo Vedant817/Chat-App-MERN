@@ -2,7 +2,7 @@ import User from "../models/User.js";
 
 const searchUsers = async (req, res) => {
     const { username } = req.query;
-    if(!username) {
+    if (!username) {
         return res.status(400).json({ message: "Please provide a username." });
     }
 
@@ -17,27 +17,47 @@ const searchUsers = async (req, res) => {
 };
 
 const addFriend = async (req, res) => {
-    const { username } = req.body;
-    const currentUserId = req.user.id; // Assuming you have middleware to set req.user
+    const { loggedInUsername, friendUsername } = req.body;
+
+    if (!loggedInUsername || !friendUsername) {
+        return res.status(400).json({ message: "Please provide both usernames." });
+    }
 
     try {
-        const friend = await User.findOne({ fullName: username });
+        const [currentUser, friendUser] = await Promise.all([
+            User.findOne({
+                fullName: {
+                    $regex: loggedInUsername, $options: "i"
+                }
+            }),
+            User.findOne({
+                fullName: {
+                    $regex: friendUsername, $options: "i"
+                }
+            })
+        ]);
 
-        if (!friend) {
+        if (!currentUser || !friendUser) {
             return res.status(404).json({ message: "User not found." });
         }
 
-        const currentUser = await User.findById(currentUserId);
-
-        if (currentUser.friends.includes(friend._id)) {
+        if (currentUser.friends.includes(friendUser._id.toString())) {
             return res.status(400).json({ message: "This user is already your friend." });
         }
 
-        currentUser.friends.push(friend._id);
-        await currentUser.save();
+        // Add each user's ID to the other's friends array
+        currentUser.friends.push(friendUser._id);
+        friendUser.friends.push(currentUser._id);
+
+        // Save both users
+        await Promise.all([
+            currentUser.save(),
+            friendUser.save()
+        ]);
 
         res.status(200).json({ message: "Friend added successfully." });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: "Error adding friend." });
     }
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ToastContainer, toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 interface AddFriendDialogProps {
     open: boolean
@@ -18,8 +19,42 @@ interface AddFriendDialogProps {
 }
 
 const AddFriendDialog: React.FC<AddFriendDialogProps> = ({ open, onOpenChange }) => {
+    const [loggedInUser, setLoggedInUser] = useState<string | null>(null);
     const [username, setUsername] = useState("");
     const [foundUser, setFoundUser] = useState<string | null>(null);
+    const navigate = useNavigate();
+
+    const getCurrentUser = async () => {
+        try {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                toast.error('Please login first');
+                navigate('/login');
+                return;
+            }
+
+            const response = await fetch(`http://localhost:5000/api/auth/me`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const data = await response.json();
+
+            if (!data.user) {
+                toast.error('Session expired. Please login again');
+                return;
+            }
+
+            setLoggedInUser(data.user.fullName);
+        } catch (error) {
+            console.error('Error verifying user:', error);
+            toast.error('Something went wrong. Please login again');
+        }
+    }
 
     const handleSearch = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -51,12 +86,12 @@ const AddFriendDialog: React.FC<AddFriendDialogProps> = ({ open, onOpenChange })
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/user/add-friend', {
+            const response = await fetch('http://localhost:5000/api/user/addFriend', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username: foundUser }),
+                body: JSON.stringify({ friendUsername: foundUser, loggedInUsername: loggedInUser }),
             });
 
             if (response.ok) {
@@ -71,6 +106,10 @@ const AddFriendDialog: React.FC<AddFriendDialogProps> = ({ open, onOpenChange })
             toast.error(`Error adding friend: ${error}`);
         }
     };
+
+    useEffect(() => {
+        getCurrentUser();
+    }, []);
 
     return (
         <>
