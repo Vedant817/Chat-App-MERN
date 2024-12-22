@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify'
 
 const DashboardPage = () => {
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [userName, setUserName] = useState('');
   const navigate = useNavigate();
 
   const handleResetChat = () => {
@@ -45,6 +46,7 @@ const DashboardPage = () => {
           navigate('/login');
           return;
         }
+        setUserName(data.user.fullName);
       } catch (error) {
         console.error('Error verifying user:', error);
         toast.error('Something went wrong. Please login again');
@@ -57,7 +59,7 @@ const DashboardPage = () => {
 
   return (
     <div className="flex h-screen flex-col">
-      <Navbar />
+      <Navbar username={userName} />
       <ToastContainer />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar onSelectChat={setSelectedChat} />
