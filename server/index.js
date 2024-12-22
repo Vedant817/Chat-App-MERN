@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import authRouter from './routes/authRoutes.js';
 import subscriptionRouter from './routes/subscriptionRouter.js';
+import userRouter from './routes/userRoutes.js';
 dotenv.config();
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(cors({
 
 app.use('/api/auth', authRouter);
 app.use('/api/subscription', subscriptionRouter);
+app.use('/api/user', userRouter);
 
 const PORT = process.env.PORT || 5000;
 const MONGODB_URL = process.env.MONGODB_URL;
