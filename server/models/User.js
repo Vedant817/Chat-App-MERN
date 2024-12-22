@@ -9,6 +9,7 @@ const userSchema = new Schema(
             trim: true,
             minlength: [2, 'Full name must be at least 2 characters long'],
             maxlength: [50, 'Full name cannot exceed 50 characters'],
+            unique: true,
         },
         email: {
             type: String,
