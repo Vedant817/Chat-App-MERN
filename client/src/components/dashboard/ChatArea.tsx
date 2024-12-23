@@ -31,7 +31,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({ selectedChat, onResetChat, onSendMe
         <div className="flex flex-1 flex-col">
             {/* Chat Header */}
             <div className="border-b p-4 flex items-center justify-between">
-                <h2 className="text-xl font-semibold">{selectedChat.name}</h2>
+                <h2 className="text-xl font-semibold">{selectedChat.fullName}</h2>
                 <Button
                     onClick={onResetChat}
                     variant="ghost"
@@ -44,7 +44,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({ selectedChat, onResetChat, onSendMe
             {/* Chat Messages */}
             <div className="flex-1 overflow-y-auto p-4">
                 {/* Chat messages rendering */}
-                <p>Chat with {selectedChat.name}</p>
+                <p>Chat with {selectedChat.fullName}</p>
             </div>
 
             {/* Chat Input */}
