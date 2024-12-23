@@ -62,4 +62,29 @@ const addFriend = async (req, res) => {
     }
 };
 
-export { searchUsers, addFriend };
+const getFriends = async (req, res) => {
+    const { username } = req.query;
+
+    if (!username) {
+        return res.status(400).json({ message: "Please provide a username." });
+    }
+
+    try {
+        const user = await User.findOne({
+            fullName: { $regex: username, $options: "i" }
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        const friends = await User.find({ _id: { $in: user.friends } }).select('fullName');
+
+        res.status(200).json(friends);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error getting friends." });
+    }
+}
+
+export { searchUsers, addFriend, getFriends };

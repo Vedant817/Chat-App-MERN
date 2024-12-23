@@ -1,5 +1,5 @@
 export interface Chat {
     id: string
-    name: string
+    fullName: string
     lastMessage: string
 }
