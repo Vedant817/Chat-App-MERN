@@ -1,17 +1,17 @@
-import mongoose, {Schema} from 'mongoose';
+import mongoose from 'mongoose';
 
-const messageSchema = new Schema({
+const messageSchema = new mongoose.Schema({
     sender: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
     receiver: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    message:{
+    message: {
         type: String,
         required: true
     },
@@ -19,7 +19,7 @@ const messageSchema = new Schema({
         type: Date,
         default: Date.now
     }
-})
+});
 
 const Message = mongoose.model('Message', messageSchema);
 
