@@ -14,7 +14,6 @@ interface Message {
   timestamp: Date;
 }
 
-// Add interface for the message data from API
 interface MessageResponse {
   sender: string;
   receiver: string;
@@ -66,20 +65,12 @@ const DashboardPage = () => {
   const fetchMessages = useCallback(async (receiver: string) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        toast.error('Authentication token missing');
-        navigate('/login');
-        return;
-      }
-
       const response = await fetch(
         `http://localhost:5000/api/message/${userName}/${receiver}`,
         {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -124,13 +115,11 @@ const DashboardPage = () => {
     // Then emit to server
     socket.emit('chat message', newMessage, (error: { message: string } | null) => {
       if (error) {
-        console.error('Failed to send message:', error);
         toast.error('Failed to send message');
         // Rollback the optimistic update
         setMessages((prevMessages) => prevMessages.slice(0, -1));
         return;
       }
-      console.log('Message sent successfully');
     });
   }, [selectedChat, socket, userName]);
 
@@ -161,7 +150,7 @@ const DashboardPage = () => {
 
     newSocket.on('error', (error) => {
       console.error('Socket error:', error);
-      toast.error('Chat error occurred');
+      // toast.error('Chat error occurred');
     });
 
     setSocket(newSocket);
@@ -178,8 +167,6 @@ const DashboardPage = () => {
     if (!socket || !selectedChat) return;
 
     const handleNewMessage = (newMessage: Message) => {
-      console.log('Received message:', newMessage);
-      
       // Check if the message belongs to the current chat
       if (
         (newMessage.sender === userName && newMessage.receiver === selectedChat.fullName) ||
